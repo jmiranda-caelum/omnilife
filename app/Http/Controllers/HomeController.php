@@ -69,6 +69,7 @@ class HomeController extends Controller
                                     'telefono' => $request->input('telefono'), 
                                     'correo' => $request->input('correo'), 
                                     'activo' => $request->input('activo'),
+                                    'updated_at' => date('Y-m-d H:i:s')
                                 ]
                             );
 
@@ -86,7 +87,9 @@ class HomeController extends Controller
                             'ciudad' => $request->input('ciudad'),
                             'telefono' => $request->input('telefono'), 
                             'correo' => $request->input('correo'),
-                            'activo' => $request->input('activo')
+                            'activo' => $request->input('activo'),
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s')
                         ]
                     );
                 }
@@ -112,6 +115,7 @@ class HomeController extends Controller
                     ->update(
                         [
                             'activo' => '0',
+                            'deleted_at' => date('Y-m-d H:i:s')
                         ]
                     );                    
             }
@@ -133,6 +137,7 @@ class HomeController extends Controller
                     ->update(
                         [
                             'activo' => '1',
+                            'deleted_at' => null
                         ]
                     );                    
             }
@@ -194,10 +199,12 @@ class HomeController extends Controller
             if($request->has('action') && $request->input('code') != ''){
                 $database = DB::connection('mysql');
                 $code = $request->input('code');
+                $id = $request->input('id');
 
                 $code_count = DB::table('empleados')
                                         ->where([
                                             ['codigo', '=', $code],
+                                            ['id', '!=', $id],
                                         ])
                                         ->count();
                 

@@ -442,13 +442,14 @@ tr:nth-child(even) {
     }
 
     function checkCode(code){
-       
+       var id = $('#idemployee').val();
         $.ajax({
             type: "POST",
             url: "{{ url ('check_code') }}",
             dataType: 'text',
             data: {
                 code: code,
+                id: id,
                 action: 1,
                 _token: '{{ csrf_token() }}'
             },
